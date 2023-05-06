@@ -17,7 +17,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PutMapping("/product")
+    @PostMapping("/product")
     public ResponseEntity<List<Product>> storeProducts(@RequestBody List<Product> products) {
 
         if (!isProductListValid(products)) {
