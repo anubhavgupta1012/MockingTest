@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.test.MockingTest.service.ProductServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-05-06T18:05:08" hostname="WKWIN6947680" time="0.003">
+  <properties/>
+  <testcase name="storedProductThenFetchedBySameProductIdShouldReturnSameProductTest()" classname="com.test.MockingTest.service.ProductServiceTest" time="0.001"/>
+  <testcase name="givenUnknownProductIdShouldReturnNull()" classname="com.test.MockingTest.service.ProductServiceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
