@@ -16,12 +16,21 @@ public class ProductService {
         this.productIdToProductMapping = productIdToProductMapping;
     }
 
-    public void storeProducts(List<Product> products) {
+    public List<Product> storeProducts(List<Product> products) {
+        if (!isProductListValid(products)) return null;
+
         Map<Integer, Product> productsToBeStored = products.stream().collect(Collectors.toMap(Product::getId, p -> p));
         productIdToProductMapping.putAll(productsToBeStored);
+        return products;
     }
 
     public Product getProductByProductId(Integer productId) {
-        return productIdToProductMapping.get(productId);
+        return productId != null ? productIdToProductMapping.get(productId) : null;
+    }
+
+    //for Defensive Programming
+    private boolean isProductListValid(List<Product> products) {
+        if (products == null || products.isEmpty()) return false;
+        return true;
     }
 }
