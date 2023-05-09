@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 
@@ -37,8 +38,10 @@ class ProductServiceTest {
     void storedProductThenFetchedBySameProductIdShouldReturnSameProductTest() {
 
         Product wallet = new Product(111, "Wallet", BigDecimal.valueOf(76.11), 1500);
-        List<Product> products = productService.storeProducts(Arrays.asList(wallet));
-        Mockito.verify(productService).storeProducts(Arrays.asList(wallet));
+        List<Product> products = Arrays.asList(wallet);
+        Map<Integer, Product> productsToBeStored = products.stream().collect(Collectors.toMap(Product::getId, p -> p));
+        productService.storeProducts(products);
+        Mockito.verify(productIdToProductMapping).putAll(productsToBeStored);
         /*
         Map<> Testing Whether it is being mapped correctly or not.
         */

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class ProductServiceTest {
@@ -27,7 +28,8 @@ class ProductServiceTest {
     @Test
     void givenProductToStoreShouldReturnSameProductOnFetchById() {
         productService.storeProducts(Arrays.asList(productToBeStored));
-        Mockito.verify(productService).storeProducts(Arrays.asList(productToBeStored));
+        Map<Integer, Product> transformedProduct = Arrays.asList(productToBeStored).stream().collect(Collectors.toMap(Product::getId, p -> p));
+        Mockito.verify(productIdToProductMapping).putAll(transformedProduct);
     }
 
     @Test
