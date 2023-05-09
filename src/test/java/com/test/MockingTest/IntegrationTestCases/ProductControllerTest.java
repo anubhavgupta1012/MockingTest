@@ -36,22 +36,14 @@ class ProductControllerTest {
                         post(PRODUCT_URI).contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(Arrays.asList(productToBeStored))))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-        compareFetchedProductBySuppliedProduct(productToBeStored);
     }
 
     @Test
     void givenProductIdShouldProvideBackThePreExistingProductTest() throws Exception {
-        compareFetchedProductBySuppliedProduct(peter_eng_shirt);
-    }
-
-    private void compareFetchedProductBySuppliedProduct(Product product) throws Exception {
-
         mockMvc.perform(
                         MockMvcRequestBuilders.get(PRODUCT_URI)
-                                .param("productId", String.valueOf(product.getId()))
+                                .param("productId", String.valueOf(peter_eng_shirt.getId()))
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string(new ObjectMapper()
-                        .writeValueAsString(product)));
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 }

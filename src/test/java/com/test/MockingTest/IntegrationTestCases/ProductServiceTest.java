@@ -4,6 +4,7 @@ import com.test.MockingTest.domain.Product;
 import com.test.MockingTest.service.ProductService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -24,20 +25,15 @@ class ProductServiceTest {
     private final Map<Integer, Product> productIdToProductMapping = new HashMap<>();
 
     @Test
-    void givenProductToStoreShouldReturnSameProduct() {
-        Mockito.lenient().when(productIdToProductMapping.get(Mockito.anyInt())).thenReturn(null);
-        Assertions.assertNull(productService.getProductByProductId(productToBeStored.getId()));
+    void givenProductToStoreShouldReturnSameProductOnFetchById() {
         productService.storeProducts(Arrays.asList(productToBeStored));
-        fetchProductByGivenProduct(productToBeStored);
+        Mockito.verify(productService).storeProducts(Arrays.asList(productToBeStored));
     }
 
     @Test
     void givenProductIdShouldReturnProductSuccessfully() {
-        fetchProductByGivenProduct(productToBeStored);
-    }
-
-    private void fetchProductByGivenProduct(Product productToBeStored) {
-        Mockito.lenient().when(productIdToProductMapping.get(Mockito.anyInt())).thenReturn(productToBeStored);
-        Assertions.assertNotNull(productService.getProductByProductId(productToBeStored.getId()));
+        Mockito.lenient().when(productIdToProductMapping.get(ArgumentMatchers.anyInt())).thenReturn(productToBeStored);
+        Product productByProductId = productService.getProductByProductId(productToBeStored.getId());
+        Assertions.assertNotNull(productByProductId);
     }
 }

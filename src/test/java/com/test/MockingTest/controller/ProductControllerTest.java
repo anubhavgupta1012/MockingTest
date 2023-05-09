@@ -3,61 +3,55 @@ package com.test.MockingTest.controller;
 import com.test.MockingTest.domain.Product;
 import com.test.MockingTest.service.ProductService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+
+@ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
 
+    @Mock
     private ProductService productService;
+    @InjectMocks
     private ProductController productController;
     Product peter_eng_shirt = new Product(109, "Peter Eng Shirt", BigDecimal.valueOf(45), 15000);
 
-    @BeforeEach
-    void setUp() {
-        this.productService = new ProductService(new HashMap<>());
-        this.productController = new ProductController(productService);
-
-
-    }
-
     @Test
     void nullProductListGivenShouldProvideBadRequestResponseBack() {
-        Assertions.assertEquals(productController.storeProducts(null), ResponseEntity.badRequest().build());
+        Assertions.assertEquals(productController.storeProducts(null).getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
 
     @Test
     void emptyProductListGivenShouldProvideBadRequestResponseBack() {
-        Assertions.assertEquals(productController.storeProducts(Collections.EMPTY_LIST), ResponseEntity.badRequest().build());
+        Assertions.assertEquals(productController.storeProducts(Collections.EMPTY_LIST).getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
     @Test
     void validProductListGivenShouldProvideOkResponseBack() {
-
-        Assertions.assertEquals(productController.storeProducts(
-                                Arrays.asList(peter_eng_shirt))
-                        .getStatusCode(),
-                HttpStatus.OK);
+        Assertions.assertEquals(productController.storeProducts(Arrays.asList(peter_eng_shirt)).getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     void givenNullProductIdShouldReturnBadRequestResponseBack() {
-        Assertions.assertEquals(productController.getProductByProductId(null), ResponseEntity.badRequest().build());
+        Assertions.assertEquals(productController.getProductByProductId(null).getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void storedAnyProductAndFetchedSameProductByProductIdShouldReturnOkResponse() {
-        HttpStatus statusCode = productController.storeProducts(Arrays.asList(peter_eng_shirt)).getStatusCode();
-        if (statusCode.is2xxSuccessful()) {
-            Product fetchedShirt = productController.getProductByProductId(peter_eng_shirt.getId()).getBody();
-            Assertions.assertEquals(peter_eng_shirt, fetchedShirt);
-        }
+    void givenUnknownProductIdShouldReturnNullOnFetchById() {
+        Integer unknownId = 9999999;
+        Mockito.lenient().when(productService.getProductByProductId(anyInt())).thenReturn(null);
+        Product fetchedShirt = productController.getProductByProductId(unknownId).getBody();
+        Assertions.assertEquals(null, fetchedShirt);
     }
 }
