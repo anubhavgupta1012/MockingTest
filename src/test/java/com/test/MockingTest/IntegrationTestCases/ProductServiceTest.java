@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+//@ExtendWith(MockitoExtension.class) will also work instead of @SpringBootTest
 @SpringBootTest
 class ProductServiceTest {
     private final Product productToBeStored = new Product(200, "Raymond Shirt", BigDecimal.valueOf(43.2), 12000);

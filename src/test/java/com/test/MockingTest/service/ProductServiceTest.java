@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -17,8 +18,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyInt;
-
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class) will also work instead of @SpringBootTest
+@SpringBootTest
 class ProductServiceTest {
 
     @InjectMocks
