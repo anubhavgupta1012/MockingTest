@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+
 //@ExtendWith(MockitoExtension.class) will also work instead of @SpringBootTest
 @SpringBootTest
 class ProductServiceTest {
@@ -62,5 +63,16 @@ class ProductServiceTest {
     void givenKnownProductIdShouldReturnNotNull() {
         Mockito.lenient().when(productIdToProductMapping.get(anyInt())).thenReturn(storedProduct);
         Assertions.assertNotNull(productService.getProductByProductId(storedProduct.getId()));
+    }
+
+
+    /*
+    * Mockito.verify() will just verify that an invocation was done on a mock during the method execution.
+    */
+    @Test
+    void givenProductIdShouldVerifyInvocation() {
+        Integer existingProductId = 101;
+        productService.deleteProduct(existingProductId);
+        Mockito.verify(productIdToProductMapping).remove(existingProductId);
     }
 }

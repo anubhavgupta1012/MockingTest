@@ -33,4 +33,10 @@ public class ProductService {
         if (products == null || products.isEmpty()) return false;
         return true;
     }
+
+    public void deleteProduct(Integer productId) {
+        if (productId != null) {
+            productIdToProductMapping.remove(productId);
+        }
+    }
 }

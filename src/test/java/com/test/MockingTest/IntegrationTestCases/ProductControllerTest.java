@@ -1,5 +1,6 @@
 package com.test.MockingTest.IntegrationTestCases;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.MockingTest.domain.Product;
 import org.junit.jupiter.api.Test;
@@ -8,11 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 
 /*@AutoConfigureMockMvc
 @ContextConfiguration(classes = {ProductConfigurationOnStartUp.class})*/
@@ -45,5 +48,12 @@ class ProductControllerTest {
                                 .param("productId", String.valueOf(peter_eng_shirt.getId()))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    public void givenEmptyListOfProductShouldReturnBadRequest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/product").
+                queryParam("productId", "45678")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
